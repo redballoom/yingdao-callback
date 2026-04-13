@@ -846,3 +846,76 @@ vercel logs yingdao-callback --prod
 # 部署
 vercel --prod
 ```
+
+
+curl -X POST http://127.0.0.1:8000/yingdao/callback/task \
+-H "Content-Type: application/json" \
+-d '{
+  "dataType": "task",
+  "endTime": 1642837962000,
+  "status": "finish",
+  "msg": "运行结束",
+  "taskUuid": "170e9fdd-2831-40d2-aa7c-e1f6f2193f06",
+  "jobList": [
+    {
+      "dataType": "job",
+      "jobUuid": "3d297e35-67b1-4ce8-b29e-0349246fc6bc",
+      "msg": "",
+      "robotClientName": "redballoon@YFLe",
+      "robotName": "开发模板",
+      "status": "finish",
+      "startTime": "2026-04-13 12:00:00",
+      "endTime": "2026-04-13 12:12:12",
+      "result": []
+    },
+    {
+      "dataType": "job",
+      "jobUuid": "6d8a9343-ccf4-4433-870a-2d2715e3c502",
+      "msg": "",
+      "robotClientName": "redballoon@YFLe",
+      "robotName": "开发模板--副本",
+      "status": "finish",
+      "startTime": "2026-04-13 12:12:12",
+      "endTime": "2026-04-13 12:30:00",
+      "result": []
+    }
+  ]
+}'
+
+$body = @{
+    dataType = "task"
+    endTime = 1776072984000
+    status = "finish"
+    msg = "运行结束"
+    taskUuid = "170e9fdd-2831-40d2-aa7c-e1f6f2193f06"
+    jobList = @(
+        @{
+            dataType = "job"
+            jobUuid = "3d297e35-67b1-4ce8-b29e-0349246fc6bc"
+            msg = ""
+            robotClientName = "redballoon@YFLe"
+            robotName = "开发模板"
+            status = "finish"
+            startTime = "2026-04-13 12:00:00"
+            endTime = "2026-04-13 12:12:12"
+            result = @()
+        },
+        @{
+            dataType = "job"
+            jobUuid = "6d8a9343-ccf4-4433-870a-2d2715e3c502"
+            msg = ""
+            robotClientName = "redballoon@YFLe"
+            robotName = "开发模板--副本"
+            status = "finish"
+            startTime = "2026-04-13 12:12:12"
+            endTime = "2026-04-13 12:30:00"
+            result = @()
+        }
+    )
+}
+
+# 转换为 JSON 并发送请求
+Invoke-RestMethod -Uri "http://127.0.0.1:8000/yingdao/callback/task" `
+                  -Method Post `
+                  -ContentType "application/json; charset=utf-8" `
+                  -Body ($body | ConvertTo-Json -Depth 10)

@@ -378,7 +378,7 @@ class BitableSDK:
     def search_records(self, filter: Optional[dict] = None,
                         field_names: Optional[list] = None,
                         sort: Optional[list] = None,
-                        automatic_fields: bool = True,
+                        automatic_fields: bool = False,
                         return_all: bool = False) -> list:
         """
         查询记录

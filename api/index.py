@@ -110,17 +110,6 @@ async def callback_task(request: Request):
              "startTime": "2021-02-03 11:11:11", "endTime": "2021-03-03 12:12:12"}
         ]
     }
-
-    格式二：单应用回调（dataType=job，Postman 模拟格式）
-    {
-        "dataType": "job",
-        "jobUuid": "42c2e0ce-499b-47aa-8642-3a1125b4759a",
-        "status": "finish",
-        "robotClientName": "ceshi1@csqy1",
-        "robotName": "导出淘宝订单",
-        "startTime": "2021-02-03 11:11:11",
-        "endTime": "2021-03-03 12:12:12"
-    }
     """
     try:
         body = await request.json()
