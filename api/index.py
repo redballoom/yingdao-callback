@@ -167,6 +167,96 @@ async def callback_app(request: Request):
 
 
 # -----------------------------------------------
+# 调试接口（查看字段和搜索结果）
+# -----------------------------------------------
+@app.get("/yingdao/debug/fields")
+async def debug_fields():
+    """
+    调试接口：列出两个表的字段信息，帮助排查字段名不匹配问题
+    """
+    try:
+        from services.bitable_sdk import BitableSDK
+
+        task_sdk = BitableSDK(
+            config.APP_ID,
+            config.APP_SECRET,
+            config.TASK_APP_TOKEN,
+            config.TASK_TABLE_ID,
+        )
+        job_sdk = BitableSDK(
+            config.APP_ID,
+            config.APP_SECRET,
+            config.JOB_APP_TOKEN,
+            config.JOB_TABLE_ID,
+        )
+
+        # 获取字段列表
+        task_fields = task_sdk.list_fields()
+        job_fields = job_sdk.list_fields()
+
+        return {
+            "success": True,
+            "task_table": {
+                "app_token": config.TASK_APP_TOKEN,
+                "table_id": config.TASK_TABLE_ID,
+                "fields": task_fields,
+            },
+            "job_table": {
+                "app_token": config.JOB_APP_TOKEN,
+                "table_id": config.JOB_TABLE_ID,
+                "fields": job_fields,
+            },
+        }
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+@app.post("/yingdao/debug/search")
+async def debug_search(request: Request):
+    """
+    调试接口：搜索指定表的记录，查看实际数据
+    Body: {"table": "task"|"job", "field": "字段名", "value": "搜索值"}
+    """
+    try:
+        body = await request.json()
+        table_type = body.get("table", "task")
+        field_name = body.get("field", "")
+        field_value = body.get("value", "")
+
+        from services.bitable_sdk import BitableSDK, create_filter
+
+        if table_type == "task":
+            sdk = BitableSDK(
+                config.APP_ID,
+                config.APP_SECRET,
+                config.TASK_APP_TOKEN,
+                config.TASK_TABLE_ID,
+            )
+        else:
+            sdk = BitableSDK(
+                config.APP_ID,
+                config.APP_SECRET,
+                config.JOB_APP_TOKEN,
+                config.JOB_TABLE_ID,
+            )
+
+        records = sdk.search_records(
+            filter=create_filter(field_name, "is", field_value),
+        )
+
+        return {
+            "success": True,
+            "table": table_type,
+            "search_field": field_name,
+            "search_value": field_value,
+            "found_count": len(records),
+            "records": records[:5],  # 只返回前5条
+        }
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+# -----------------------------------------------
 # 手动触发更新（供调试/测试用）
 # -----------------------------------------------
 @app.post("/yingdao/update", response_model=CallbackResponse)
