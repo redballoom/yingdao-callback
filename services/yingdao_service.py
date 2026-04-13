@@ -199,7 +199,7 @@ def update_job_record(
         rec_id = rec.get("record_id", "?")
         rec_fields = rec.get("fields", {})
         rec_status = rec_fields.get("任务状态", "?")
-        logger.info(f"[Job 搜索结果 {i}] record_id={rec_id}, 任务状态={rec_status}")
+        print(f"[Job 搜索结果 {i}] record_id={rec_id}, 任务状态={rec_status}")
 
     if not records:
         return {
