@@ -28,7 +28,7 @@ class YDTaskCallback(BaseModel):
     影刀任务运行回调（整体任务级别）
 
     触发时机：整个任务状态变化时推送
-    回调地址：https://blog.redballoon.icu/yingdao/callback/
+    回调地址：https://yingdao.redballoon.icu/yingdao/callback/
     """
     task_uuid: str = Field(..., alias="taskUuid", description="任务唯一标识（对应 Task 表 taskUUID 字段）")
     task_status: str = Field(..., alias="taskStatus", description="任务状态 created/waiting/running/finish/error/stopped")

@@ -24,3 +24,6 @@ Thumbs.db
 
 # Local test files (keep app.py and config.py)
 # test_callback.py is useful for CI, keep it
+
+# Underscore-prefixed debug/test files (local only, never commit)
+_*

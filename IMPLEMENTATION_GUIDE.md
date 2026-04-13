@@ -28,9 +28,9 @@
 | 信息 | 来源 | 写入位置 |
 |------|------|---------|
 | 任务状态 | 影刀回调 `status` | Task 表「资产状态」 |
-| 开始/结束时间 | 影刀回调 `startTime/endTime` | Task 表「开始运行时间」「最后结束运行时间」 |
+| 结束时间 | 影刀回调 `endTime` | Task 表「最后结束运行时间」 |
 | 应用执行状态 | 影刀回调 `jobList[].status` | Job 表「任务状态」 |
-| 应用开始/结束时间 | 影刀回调 `jobList[].startTime/endTime` | Job 表「开始运行时间」「最后结束运行时间」 |
+| 应用开始/结束时间 | 影刀回调 `jobList[].startTime/endTime` | Job 表「开始运行时间」「结束运行时间」 |
 
 ### 1.2 双表结构
 
@@ -47,7 +47,7 @@ Job 表（应用执行记录表）       │
 ├── 当前执行应用名称   — Text（搜索条件）← robotName
 ├── 任务状态           — 单选：created/waiting/running/finish/stopping/stopped/error
 ├── 开始运行时间       — Text（直接存字符串）
-├── 最后结束运行时间    — Text（直接存字符串）
+├── 结束运行时间       — Text（直接存字符串）
 └── 💻 环境与资产       — DuplexLink（关联回 Task 表）
 ```
 
@@ -104,7 +104,6 @@ FastAPI 服务（Vercel）
   "dataType": "task",
   "taskUuid": "ea947f83-82fb-4afb-8412-4021255fd7cd",
   "status": "finish",
-  "startTime": 1744274400000,
   "endTime": 1744275600000,
   "jobList": [
     {
@@ -341,12 +340,10 @@ Task 表状态使用表情符号，需要映射：
 
 ```python
 TASK_STATUS_MAP = {
-    "created":  "🟢 空闲",
     "waiting":  "🟢 空闲",
     "running":  "🔵 运行中",
-    "paused":   "🔵 运行中",
     "finish":   "🟢 空闲",
-    "stopping": "🟢 空闲",
+    "stopping": "🔵 运行中",
     "stopped":  "🟢 空闲",
     "error":    "🔴 故障/离线",
 }
