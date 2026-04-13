@@ -274,43 +274,41 @@ async def debug_search(request: Request):
 
 
 # -----------------------------------------------
-# 模拟回调流程（同步返回每一步的结果，用于排查问题）
+# 诊断 Job 搜索问题（直接暴露 search_records 的原始返回）
 # -----------------------------------------------
-@app.post("/yingdao/debug/callback-test")
-async def debug_callback_test(request: Request):
+@app.get("/yingdao/debug/search-raw")
+async def debug_search_raw(
+    table: str = Query(..., description="task 或 job"),
+    field: str = Query(..., description="字段名"),
+    value: str = Query(..., description="字段值"),
+):
     """
-    模拟完整的回调处理流程，但同步返回每一步的详细信息
-    Body: 同 /yingdao/callback/task 的格式
+    直接调用 sdk.search_records，返回原始返回结果（不经过 force-update 逻辑）
+    用于诊断搜索为什么返回 0 条记录
     """
     try:
-        body = await request.json()
-        task_uuid = body.get("taskUuid", "")
-        task_status = body.get("taskStatus", "")
-        start_time = body.get("startTime")
-        end_time = body.get("endTime")
-        job_list = body.get("jobList", [])
-
-        result = {"task_result": None, "job_results": []}
-
-        # 步骤1：更新 Task 表
-        if task_uuid:
-            task_result = update_task_record(task_uuid, task_status, start_time, end_time)
-            result["task_result"] = task_result
-
-        # 步骤2：更新 Job 表
-        for job in job_list:
-            robot_name = job.get("robotName", "")
-            job_status = job.get("jobStatus", "")
-            job_start = job.get("startTime")
-            job_end = job.get("endTime")
-
-            job_result = update_job_record(robot_name, job_status, job_start, job_end)
-            result["job_results"].append(job_result)
-
-        return {"success": True, "debug": result, "raw_body": body}
+        if table == "job":
+            sdk = _get_job_sdk()
+            raw_filter = create_filter(field, "is", value)
+            records = sdk.search_records(filter=raw_filter)
+            # 打印传给 API 的原始 filter 结构
+            return {
+                "table": table,
+                "sdk_filter": raw_filter,
+                "found_count": len(records),
+                "records": [
+                    {
+                        "record_id": r.get("record_id"),
+                        "fields": {k: v for k, v in r.get("fields", {}).items() if k in [field, "任务状态"]},
+                    }
+                    for r in records
+                ],
+            }
+        else:
+            return {"error": "只支持 job 表"}
     except Exception as e:
         import traceback
-        return {"success": False, "error": str(e), "trace": traceback.format_exc()}
+        return {"error": str(e), "trace": traceback.format_exc()}
 
 
 # -----------------------------------------------
