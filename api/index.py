@@ -274,6 +274,43 @@ async def debug_search(request: Request):
 
 
 # -----------------------------------------------
+# 强制更新接口（直接指定 record_id 强制更新，用于排除搜索问题）
+# -----------------------------------------------
+@app.post("/yingdao/force-update-job")
+async def force_update_job(request: Request):
+    """
+    强制更新 Job 表的指定记录（不搜索，直接用 record_id）
+    Body: {"record_id": "xxx", "status": "finish", "start_time": "2026-04-13 12:00:00", "end_time": "2026-04-13 12:30:00"}
+    """
+    try:
+        body = await request.json()
+        record_id = body.get("record_id")
+        status = body.get("status", "")
+        start_time = body.get("start_time")
+        end_time = body.get("end_time")
+
+        from services.bitable_sdk import BitableSDK
+        sdk = BitableSDK(
+            config.APP_ID,
+            config.APP_SECRET,
+            config.JOB_APP_TOKEN,
+            config.JOB_TABLE_ID,
+        )
+
+        fields = {"任务状态": status}
+        if start_time:
+            fields[config.JOB_FIELD_START_TIME] = str(start_time)
+        if end_time:
+            fields[config.JOB_FIELD_END_TIME] = str(end_time)
+
+        result = sdk.update_record(record_id, fields)
+
+        return {"success": True, "record_id": record_id, "fields": fields, "result": result}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+# -----------------------------------------------
 # 手动触发更新（供调试/测试用）
 # -----------------------------------------------
 @app.post("/yingdao/update", response_model=CallbackResponse)
