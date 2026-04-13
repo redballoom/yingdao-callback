@@ -190,10 +190,16 @@ def update_job_record(
     """
     sdk = _get_job_sdk()
 
-    # 按应用名称精确匹配搜索（完全一致）
-    records = sdk.search_records(
-        filter=create_filter(config.JOB_FIELD_ROBOT_NAME, "is", robot_name),
-    )
+    # 调试日志：打印搜索条件和结果
+    job_filter = create_filter(config.JOB_FIELD_ROBOT_NAME, "is", robot_name)
+    records = sdk.search_records(filter=job_filter)
+
+    # 打印所有找到的记录
+    for i, rec in enumerate(records):
+        rec_id = rec.get("record_id", "?")
+        rec_fields = rec.get("fields", {})
+        rec_status = rec_fields.get("任务状态", "?")
+        logger.info(f"[Job 搜索结果 {i}] record_id={rec_id}, 任务状态={rec_status}")
 
     if not records:
         return {
