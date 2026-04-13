@@ -5,8 +5,8 @@
 
 # ---------- 飞书应用凭证 ----------
 # 与 config.py 中的 APP_ID / APP_SECRET 相同
-APP_ID = "cli_a94b4d8925e49bd3"
-APP_SECRET = "zj0CjbyN2dwCAop6enlQogxGcQvpTwHD"
+APP_ID = "XXX"
+APP_SECRET = "XXX"
 
 # ---------- API 配置 ----------
 API_BASE_URL = "https://open.feishu.cn/open-apis"
