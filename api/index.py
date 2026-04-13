@@ -2,7 +2,7 @@
 影刀 RPA 回调接收服务
 FastAPI 应用 — 部署于 Vercel
 
-回调地址：https://blog.redballoon.icu/yingdao/callback/
+回调地址：https://yingdao.redballoon.icu/yingdao/callback/
 """
 
 import sys

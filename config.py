@@ -39,8 +39,8 @@ JOB_VIEW_ID = "vewQAS31Lf"
 # Job 表字段名
 JOB_FIELD_ROBOT_NAME = "当前执行应用名称"          # 应用名称（搜索条件）
 JOB_FIELD_STATUS = "任务状态"                      # 执行状态（单选）
-JOB_FIELD_START_TIME = "开始运行时间"              # 执行开始时间（日期，毫秒时间戳）
-JOB_FIELD_END_TIME = "最后结束运行时间"             # 执行结束时间（日期，毫秒时间戳）
+JOB_FIELD_START_TIME = "开始运行时间"              # 执行开始时间（Text 文本类型，存 yyyy-MM-dd HH:mm:ss 格式字符串）
+JOB_FIELD_END_TIME = "最后结束运行时间"             # 执行结束时间（Text 文本类型，存 yyyy-MM-dd HH:mm:ss 格式字符串）
 
 
 # ============================================================
