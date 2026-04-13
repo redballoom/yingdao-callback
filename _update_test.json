@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "message": "Task 回调处理成功",
+  "detail": {
+    "task": {
+      "success": true,
+      "updated": 1,
+      "message": "Task 表更新成功，共 1 条记录"
+    },
+    "jobs": [
+      {
+        "robotName": "开发模板",
+        "success": true,
+        "updated": true,
+        "record_id": "recvgB2UYCfEv4",
+        "message": "Job 表记录 recvgB2UYCfEv4 更新成功"
+      }
+    ]
+  }
+}

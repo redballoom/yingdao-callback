@@ -1,0 +1,107 @@
+{
+  "success": true,
+  "table": "job",
+  "search_field": "当前执行应用名称",
+  "search_value": "开发模板",
+  "found_count": 1,
+  "records": [
+    {
+      "created_by": {
+        "email": "",
+        "en_name": "多维表格助手",
+        "id": "ou_76ee0066ef75fc2ad8d847c5959935a6",
+        "name": "多维表格助手"
+      },
+      "created_time": 1776012848000,
+      "fields": {
+        "jobUUID": [
+          {
+            "text": "5600574a-949e-4443-aca4-9567a06c59d2",
+            "type": "text"
+          }
+        ],
+        "任务状态": "running",
+        "开始运行时间": [
+          {
+            "text": "2026-04-13 12:00:00",
+            "type": "text"
+          }
+        ],
+        "当前执行应用名称": [
+          {
+            "text": "开发模板",
+            "type": "text"
+          }
+        ],
+        "执行调度任务名称": {
+          "type": 1,
+          "value": [
+            {
+              "text": "开发模板测试调度运行",
+              "type": "text"
+            }
+          ]
+        },
+        "最后结束运行时间": [
+          {
+            "text": "2026-04-13 12:30:00",
+            "type": "text"
+          }
+        ],
+        "累计运行时长(M)": {
+          "type": 2,
+          "value": [
+            30
+          ]
+        },
+        "记录id": {
+          "type": 1,
+          "value": [
+            {
+              "text": "recvgB2UYCfEv4",
+              "type": "text"
+            }
+          ]
+        },
+        "资产状态": {
+          "type": 3,
+          "value": [
+            "🔵 运行中"
+          ]
+        },
+        "运行账号": {
+          "type": 1,
+          "value": [
+            {
+              "text": "redballoon@YFLe",
+              "type": "text"
+            }
+          ]
+        },
+        "项目": {
+          "type": 1,
+          "value": [
+            {
+              "text": "redballoon-redballoon@YFLe",
+              "type": "text"
+            }
+          ]
+        },
+        "💻 环境与资产": {
+          "link_record_ids": [
+            "recvg5WGYcDXBw"
+          ]
+        },
+        "📝 执行明细记录": {}
+      },
+      "last_modified_by": {
+        "email": "",
+        "en_name": "吴文豪",
+        "id": "ou_70ea63d850904be32c337c5e1778ca0e",
+        "name": "吴文豪"
+      },
+      "last_modified_time": 1776062281000,
+      "record_id": "recvgB2UYCfEv4"
+    }
+  ]
+}

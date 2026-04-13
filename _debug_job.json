@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "table": "job",
+  "search_field": "jobUUID",
+  "search_value": "test-job-001",
+  "found_count": 0,
+  "records": []
+}

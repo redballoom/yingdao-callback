@@ -8,7 +8,14 @@ FastAPI 应用 — 部署于 Vercel
 import sys
 import os
 import logging
+import time
+from collections import deque
 from typing import Optional
+
+# -----------------------------------------------
+# 回调日志（最多保留50条）
+# -----------------------------------------------
+_callback_log = deque(maxlen=50)  # 线程安全，限制最大50条
 
 # 确保项目根目录在 import 路径中
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -58,6 +65,23 @@ app.add_middleware(
 
 
 # -----------------------------------------------
+# 查看回调日志（调试用）
+# -----------------------------------------------
+@app.get("/yingdao/logs")
+async def get_callback_logs(limit: int = Query(20, ge=1, le=50)):
+    """
+    查看最近收到的影刀回调原始数据
+    用法：GET /yingdao/logs 或 /yingdao/logs?limit=10
+    """
+    logs = list(_callback_log)
+    logs.reverse()  # 最新的在前
+    return {
+        "total": len(logs),
+        "logs": logs[:limit],
+    }
+
+
+# -----------------------------------------------
 # 健康检查
 # -----------------------------------------------
 @app.get("/yingdao/health")
@@ -97,6 +121,13 @@ async def callback_task(request: Request):
         # 影刀实际字段名是 status，不是 taskStatus
         task_status = body.get("status") or body.get("taskStatus")
         logger.info(f"[TASK Callback] taskUuid={body.get('taskUuid')}, status={task_status}")
+
+        # 记录原始回调数据
+        _callback_log.append({
+            "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "endpoint": "/yingdao/callback/task",
+            "data": body,
+        })
 
         # 解析并处理回调
         result = process_yingdao_callback(body)
@@ -145,6 +176,13 @@ async def callback_app(request: Request):
         end_time = body.get("endTime")
 
         logger.info(f"[APP Callback] robotName={robot_name}, status={job_status}")
+
+        # 记录原始回调数据
+        _callback_log.append({
+            "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "endpoint": "/yingdao/callback/app",
+            "data": body,
+        })
 
         # 只更新 Job 表（按应用名称取最新）
         result = update_job_record(

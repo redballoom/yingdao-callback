@@ -1,0 +1,552 @@
+{
+  "success": true,
+  "task_table": {
+    "app_token": "Z86IbHdoiajCCGsim1Zc6BISnlc",
+    "table_id": "tbllXMN6akGNedjE",
+    "fields": [
+      {
+        "field_id": "fldKPa44Su",
+        "field_name": "记录值",
+        "is_extend": false,
+        "is_primary": true,
+        "is_synced": false,
+        "property": {
+          "formatter": "",
+          "formula_expression": "CONCATENATE(bitable::$table[tbllXMN6akGNedjE].$field[fldlNcZ62y], \"-\", bitable::$table[tbllXMN6akGNedjE].$field[fldpEK4jTM])",
+          "type": {
+            "data_type": 1
+          }
+        },
+        "type": 20,
+        "ui_type": "Formula"
+      },
+      {
+        "field_id": "flddPJTNpt",
+        "field_name": "运行电脑",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fldlNcZ62y",
+        "field_name": "远程标识",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fldpEK4jTM",
+        "field_name": "运行账号",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "flduysMiFw",
+        "field_name": "执行调度任务名称",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fld3MK99gk",
+        "field_name": "资产状态",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "options": [
+            {
+              "color": 0,
+              "id": "optZvqsQAE",
+              "name": "🟢 空闲"
+            },
+            {
+              "color": 1,
+              "id": "optQJYJ9VJ",
+              "name": "🔵 运行中"
+            },
+            {
+              "color": 3,
+              "id": "optHLrqGRB",
+              "name": "🔴 故障/离线"
+            }
+          ]
+        },
+        "type": 3,
+        "ui_type": "SingleSelect"
+      },
+      {
+        "field_id": "fldVl7Ax2k",
+        "field_name": "配置备注",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fldAuYnaVq",
+        "field_name": "任务追踪查询",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 3001,
+        "ui_type": "Button"
+      },
+      {
+        "field_id": "fldgKHtMPB",
+        "field_name": "开始运行时间",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "auto_fill": false,
+          "date_formatter": "yyyy-MM-dd HH:mm"
+        },
+        "type": 5,
+        "ui_type": "DateTime"
+      },
+      {
+        "field_id": "fldpaMZOy8",
+        "field_name": "最后结束运行时间",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "auto_fill": false,
+          "date_formatter": "yyyy-MM-dd HH:mm"
+        },
+        "type": 5,
+        "ui_type": "DateTime"
+      },
+      {
+        "field_id": "fldHMPk0Vf",
+        "field_name": "运行时长（小时）",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "formatter": "0.00",
+          "formula_expression": "VALUE((bitable::$table[tbllXMN6akGNedjE].$field[fldpaMZOy8]-bitable::$table[tbllXMN6akGNedjE].$field[fldgKHtMPB])*1440)/60",
+          "type": {
+            "data_type": 2,
+            "ui_property": {
+              "formatter": "0.00"
+            },
+            "ui_type": "Number"
+          }
+        },
+        "type": 20,
+        "ui_type": "Formula"
+      },
+      {
+        "field_id": "fldRsT8CYz",
+        "field_name": "关联项目",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "multiple": true,
+          "table_id": "tbl2aHD3stsyJl8A",
+          "table_name": "🚩 项目"
+        },
+        "type": 18,
+        "ui_type": "SingleLink"
+      },
+      {
+        "field_id": "flduzp6EmO",
+        "field_name": "关联项目数量",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "formatter": "0",
+          "formula_expression": "bitable::$table[tbllXMN6akGNedjE].$field[fldRsT8CYz].SPLIT(\",\").COUNTA()",
+          "type": {
+            "data_type": 2,
+            "ui_property": {
+              "formatter": "0"
+            },
+            "ui_type": "Number"
+          }
+        },
+        "type": 20,
+        "ui_type": "Formula"
+      },
+      {
+        "field_id": "fldhenBHRm",
+        "field_name": "记录id",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "formatter": "",
+          "formula_expression": "RECORD_ID()",
+          "type": {
+            "data_type": 1
+          }
+        },
+        "type": 20,
+        "ui_type": "Formula"
+      },
+      {
+        "field_id": "fldsuW92uB",
+        "field_name": "taskUUID",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fldt7cWNZs",
+        "field_name": "⏲️ 任务调度表",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "back_field_id": "fldJbuNNA1",
+          "back_field_name": "执行资产/环境",
+          "multiple": true,
+          "table_id": "tbltzZpkURlmklJc",
+          "table_name": "⏲️ 任务调度表"
+        },
+        "type": 21,
+        "ui_type": "DuplexLink"
+      },
+      {
+        "field_id": "fldiQtdfF5",
+        "field_name": "任务进度追踪",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "back_field_id": "fldi8W0drq",
+          "back_field_name": "💻 环境与资产",
+          "multiple": true,
+          "table_id": "tblG3lAggRTgfiZy",
+          "table_name": "👣 任务进度追踪"
+        },
+        "type": 21,
+        "ui_type": "DuplexLink"
+      },
+      {
+        "field_id": "fldFKbhh2a",
+        "field_name": "机器人UUID",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fldGT6sYMf",
+        "field_name": "🛠️ 调度任务配置信息",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "back_field_id": "fldUZlXRVr",
+          "back_field_name": "💻 环境与资产",
+          "multiple": false,
+          "table_id": "tblEcnusu38nxEOB",
+          "table_name": "🛠️ 调度任务配置信息"
+        },
+        "type": 21,
+        "ui_type": "DuplexLink"
+      }
+    ]
+  },
+  "job_table": {
+    "app_token": "Z86IbHdoiajCCGsim1Zc6BISnlc",
+    "table_id": "tblG3lAggRTgfiZy",
+    "fields": [
+      {
+        "field_id": "fldXg637Ca",
+        "field_name": "项目",
+        "is_extend": false,
+        "is_primary": true,
+        "is_synced": false,
+        "property": {
+          "formatter": "",
+          "formula_expression": "CONCATENATE(bitable::$table[tblG3lAggRTgfiZy].$field[fldi8W0drq])",
+          "type": {
+            "data_type": 1
+          }
+        },
+        "type": 20,
+        "ui_type": "Formula"
+      },
+      {
+        "field_id": "fldgiXOUT7",
+        "field_name": "运行账号",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "filter_info": {
+            "conditions": {
+              "children": [
+                {
+                  "field_id": "fldKPa44Su",
+                  "field_type": 20,
+                  "operator": "is",
+                  "value": null
+                }
+              ],
+              "conjunction": "and"
+            },
+            "target_table": "tbllXMN6akGNedjE"
+          },
+          "formatter": "",
+          "formula": "bitable::$table[tbllXMN6akGNedjE].FILTER(CurrentValue.$column[fldKPa44Su]=bitable::$table[tblG3lAggRTgfiZy].$field[fldi8W0drq]).$column[fldpEK4jTM].LISTCOMBINE()",
+          "roll_up": 0,
+          "target_field": "fldpEK4jTM"
+        },
+        "type": 19,
+        "ui_type": "Lookup"
+      },
+      {
+        "field_id": "fldJWNwWdy",
+        "field_name": "执行调度任务名称",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "filter_info": {
+            "conditions": {
+              "children": [
+                {
+                  "field_id": "fldKPa44Su",
+                  "field_type": 20,
+                  "operator": "is",
+                  "value": null
+                }
+              ],
+              "conjunction": "and"
+            },
+            "target_table": "tbllXMN6akGNedjE"
+          },
+          "formatter": "",
+          "formula": "bitable::$table[tbllXMN6akGNedjE].FILTER(CurrentValue.$column[fldKPa44Su]=bitable::$table[tblG3lAggRTgfiZy].$field[fldi8W0drq]).$column[flduysMiFw].LISTCOMBINE()",
+          "roll_up": 0,
+          "target_field": "flduysMiFw"
+        },
+        "type": 19,
+        "ui_type": "Lookup"
+      },
+      {
+        "field_id": "fldaSTGBuL",
+        "field_name": "当前执行应用名称",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fldL2lQoAw",
+        "field_name": "资产状态",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "filter_info": {
+            "conditions": {
+              "children": [
+                {
+                  "field_id": "fldKPa44Su",
+                  "field_type": 20,
+                  "operator": "is",
+                  "value": null
+                }
+              ],
+              "conjunction": "and"
+            },
+            "target_table": "tbllXMN6akGNedjE"
+          },
+          "formatter": "",
+          "formula": "bitable::$table[tbllXMN6akGNedjE].FILTER(CurrentValue.$column[fldKPa44Su]=bitable::$table[tblG3lAggRTgfiZy].$field[fldi8W0drq]).$column[fld3MK99gk].LISTCOMBINE()",
+          "roll_up": 0,
+          "target_field": "fld3MK99gk"
+        },
+        "type": 19,
+        "ui_type": "Lookup"
+      },
+      {
+        "field_id": "fldrk0DPDL",
+        "field_name": "任务状态",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "options": [
+            {
+              "color": 0,
+              "id": "optGmJth6q",
+              "name": "created"
+            },
+            {
+              "color": 1,
+              "id": "optfXNYNR3",
+              "name": "waiting"
+            },
+            {
+              "color": 2,
+              "id": "optegVUP6A",
+              "name": "running"
+            },
+            {
+              "color": 3,
+              "id": "optwwdnLGZ",
+              "name": "finish"
+            },
+            {
+              "color": 4,
+              "id": "opt6TP5ZRQ",
+              "name": "stopping"
+            },
+            {
+              "color": 5,
+              "id": "optnN5CdRR",
+              "name": "stopped"
+            },
+            {
+              "color": 6,
+              "id": "optHqqCZl4",
+              "name": "error"
+            },
+            {
+              "color": 7,
+              "id": "optNOI2WX7",
+              "name": "skipped"
+            },
+            {
+              "color": 8,
+              "id": "opttoijr2X",
+              "name": "cancel"
+            }
+          ]
+        },
+        "type": 3,
+        "ui_type": "SingleSelect"
+      },
+      {
+        "field_id": "fld7bbDoev",
+        "field_name": "开始运行时间",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fld0clPFAY",
+        "field_name": "最后结束运行时间",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fldYSP7SPr",
+        "field_name": "累计运行时长(M)",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "formatter": "0.00",
+          "formula_expression": "(TODATE(bitable::$table[tblG3lAggRTgfiZy].$field[fld0clPFAY])-TODATE(bitable::$table[tblG3lAggRTgfiZy].$field[fld7bbDoev]))*1440",
+          "type": {
+            "data_type": 2,
+            "ui_property": {
+              "formatter": "0.00"
+            },
+            "ui_type": "Number"
+          }
+        },
+        "type": 20,
+        "ui_type": "Formula"
+      },
+      {
+        "field_id": "fldYz5Btf7",
+        "field_name": "记录id",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "formatter": "",
+          "formula_expression": "RECORD_ID()",
+          "type": {
+            "data_type": 1
+          }
+        },
+        "type": 20,
+        "ui_type": "Formula"
+      },
+      {
+        "field_id": "fldFrAE3wu",
+        "field_name": "jobUUID",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": null,
+        "type": 1,
+        "ui_type": "Text"
+      },
+      {
+        "field_id": "fldi8W0drq",
+        "field_name": "💻 环境与资产",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "back_field_id": "fldiQtdfF5",
+          "back_field_name": "任务进度追踪",
+          "multiple": true,
+          "table_id": "tbllXMN6akGNedjE",
+          "table_name": "💻 环境与资产"
+        },
+        "type": 21,
+        "ui_type": "DuplexLink"
+      },
+      {
+        "field_id": "fldH5P5tar",
+        "field_name": "📝 执行明细记录",
+        "is_extend": false,
+        "is_primary": false,
+        "is_synced": false,
+        "property": {
+          "back_field_id": "fldxw0CltE",
+          "back_field_name": "👣 任务进度追踪",
+          "multiple": true,
+          "table_id": "tblJvyJWKtcFU5RI",
+          "table_name": "📝 执行明细记录"
+        },
+        "type": 21,
+        "ui_type": "DuplexLink"
+      }
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "success": true,
+  "table": "task",
+  "search_field": "taskUUID",
+  "search_value": "f5c6f5c0-128f-4de9-b2f2-f9405ef71289",
+  "found_count": 1,
+  "records": [
+    {
+      "created_by": {
+        "email": "",
+        "en_name": "吴文豪",
+        "id": "ou_70ea63d850904be32c337c5e1778ca0e",
+        "name": "吴文豪"
+      },
+      "created_time": 1775667077000,
+      "fields": {
+        "taskUUID": [
+          {
+            "text": "f5c6f5c0-128f-4de9-b2f2-f9405ef71289",
+            "type": "text"
+          }
+        ],
+        "⏲️ 任务调度表": {
+          "link_record_ids": [
+            "recvg5VYMaU2Ut"
+          ]
+        },
+        "任务进度追踪": {
+          "link_record_ids": [
+            "recvgB2UYCfEv4",
+            "recvgB2VcvZ36e"
+          ]
+        },
+        "关联项目": {
+          "link_record_ids": [
+            "recvg5W0HSqflA"
+          ]
+        },
+        "关联项目数量": {
+          "type": 2,
+          "value": [
+            1
+          ]
+        },
+        "开始运行时间": 1776081600000,
+        "执行调度任务名称": [
+          {
+            "text": "开发模板测试调度运行",
+            "type": "text"
+          }
+        ],
+        "最后结束运行时间": 1776092400000,
+        "机器人UUID": [
+          {
+            "text": "083d0ac1-164e-4839-98d6-18599fe2aa0e",
+            "type": "text"
+          }
+        ],
+        "记录id": {
+          "type": 1,
+          "value": [
+            {
+              "text": "recvg5WGYcDXBw",
+              "type": "text"
+            }
+          ]
+        },
+        "记录值": {
+          "type": 1,
+          "value": [
+            {
+              "text": "redballoon-redballoon@YFLe",
+              "type": "text"
+            }
+          ]
+        },
+        "资产状态": "🟢 空闲",
+        "运行时长（小时）": {
+          "type": 2,
+          "value": [
+            3
+          ]
+        },
+        "运行电脑": [
+          {
+            "text": "redballoon",
+            "type": "text"
+          }
+        ],
+        "运行账号": [
+          {
+            "text": "redballoon@YFLe",
+            "type": "text"
+          }
+        ],
+        "远程标识": [
+          {
+            "text": "redballoon",
+            "type": "text"
+          }
+        ],
+        "🛠️ 调度任务配置信息": {
+          "link_record_ids": [
+            "recvg6djbUb1zU"
+          ]
+        }
+      },
+      "last_modified_by": {
+        "email": "",
+        "en_name": "吴文豪",
+        "id": "ou_70ea63d850904be32c337c5e1778ca0e",
+        "name": "吴文豪"
+      },
+      "last_modified_time": 1776064198000,
+      "record_id": "recvg5WGYcDXBw"
+    }
+  ]
+}
