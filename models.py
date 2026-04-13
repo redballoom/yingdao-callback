@@ -3,7 +3,7 @@ Pydantic 数据模型 — 影刀回调请求体 + 内部处理结果
 """
 
 from typing import Optional, List, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 # ============================================================
@@ -38,6 +38,14 @@ class YDJobItem(BaseModel):
 
     class Config:
         populate_by_name = True
+
+    @model_validator(mode="before")
+    @classmethod
+    def _normalize_result(cls, values: dict) -> dict:
+        """result 为 null 时转为空列表，避免 Pydantic 校验失败"""
+        if "result" in values and values["result"] is None:
+            values["result"] = []
+        return values
 
 
 class YDTaskCallback(BaseModel):

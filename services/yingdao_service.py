@@ -100,6 +100,7 @@ def format_datetime_for_text(dt_value: Optional[str | int | float]) -> Optional[
 # 影刀 taskStatus → 飞书 Task 表「资产状态」选项名
 # 映射规则：运行中才显示🔵运行中，其他（created/waiting/finish/stopping/stopped）都是🟢空闲，异常才是🔴故障/离线
 TASK_STATUS_MAP = {
+    "created":   "🟢 空闲",   # 任务已创建，等待调度，等效于空闲
     "waiting":   "🟢 空闲",
     "running":   "🔵 运行中",
     "finish":    "🟢 空闲",
