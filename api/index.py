@@ -211,14 +211,22 @@ async def debug_fields():
         return {"success": False, "error": str(e)}
 
 
-@app.post("/yingdao/debug/search")
-async def debug_search(request: Request):
+@app.get("/yingdao/debug/search")
+async def debug_search_get(
+    table: str = "",
+    field: str = "",
+    value: str = "",
+):
     """
-    调试接口：搜索指定表的记录，查看实际数据
-    Body: {"table": "task"|"job", "field": "字段名", "value": "搜索值"}
+    调试接口（GET 版本）：搜索指定表的记录
+    用法：/yingdao/debug/search?table=task&field=taskUUID&value=xxx
     """
+    return await _do_debug_search({"table": table, "field": field, "value": value})
+
+
+async def _do_debug_search(body: dict) -> dict:
+    """搜索指定表的记录，通用实现"""
     try:
-        body = await request.json()
         table_type = body.get("table", "task")
         field_name = body.get("field", "")
         field_value = body.get("value", "")
@@ -254,6 +262,15 @@ async def debug_search(request: Request):
         }
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+
+@app.post("/yingdao/debug/search")
+async def debug_search(request: Request):
+    """
+    调试接口（POST 版本）：搜索指定表的记录
+    Body: {"table": "task"|"job", "field": "字段名", "value": "搜索值"}
+    """
+    return await _do_debug_search(await request.json())
 
 
 # -----------------------------------------------
