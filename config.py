@@ -14,7 +14,7 @@ API_BASE_URL = "https://open.feishu.cn/open-apis"
 
 # ============================================================
 # Task 表（任务总览表）
-# URL: https://xxpyxdimpb.feishu.cn/base/Z86IbHdoiajCCGsim1Zc6BISnlc?table=tbllXMN6akGNedjE&view=vewl9bCH4X
+# URL: https://xxx.feishu.cn/base/Z86IbHdoiajCCGsim1Zc6BISnlc?table=tbllXMN6akGNedjE&view=vewl9bCH4X
 # ============================================================
 TASK_APP_TOKEN = "Z86IbHdoiajCCGsim1Zc6BISnlc"
 TASK_TABLE_ID = "tbllXMN6akGNedjE"
@@ -29,7 +29,7 @@ TASK_FIELD_END_TIME = "最后结束运行时间"         # 执行结束时间（
 
 # ============================================================
 # Job 表（应用执行记录表）
-# URL: https://xxpyxdimpb.feishu.cn/base/Z86IbHdoiajCCGsim1Zc6BISnlc?table=tblG3lAggRTgfiZy&view=vewQAS31Lf
+# URL: https://xxx.feishu.cn/base/Z86IbHdoiajCCGsim1Zc6BISnlc?table=tblG3lAggRTgfiZy&view=vewQAS31Lf
 # ============================================================
 JOB_APP_TOKEN = "Z86IbHdoiajCCGsim1Zc6BISnlc"
 JOB_TABLE_ID = "tblG3lAggRTgfiZy"
