@@ -96,31 +96,34 @@ async def health_check():
 @app.post("/yingdao/callback/task", response_model=CallbackResponse)
 async def callback_task(request: Request):
     """
-    影刀任务运行回调
-    触发时机：整个任务状态变化时推送
+    影刀回调接收（兼容两种格式）
 
-    影刀实际请求体格式：
+    格式一：任务级回调（dataType=task）
     {
         "dataType": "task",
         "taskUuid": "ea947f83-82fb-4afb-8412-4021255fd7cd",
-        "status": "finish",        // ← 影刀用 status
+        "status": "finish",
         "startTime": 1642837962000,
         "endTime": 1642837962000,
         "jobList": [
-            {
-                "robotName": "导出淘宝订单",
-                "status": "finish",  // ← 影刀用 status
-                "startTime": "2021-02-03 11:11:11",
-                "endTime": "2021-03-03 12:12:12"
-            }
+            {"robotName": "导出淘宝订单", "status": "finish",
+             "startTime": "2021-02-03 11:11:11", "endTime": "2021-03-03 12:12:12"}
         ]
+    }
+
+    格式二：单应用回调（dataType=job，Postman 模拟格式）
+    {
+        "dataType": "job",
+        "jobUuid": "42c2e0ce-499b-47aa-8642-3a1125b4759a",
+        "status": "finish",
+        "robotClientName": "ceshi1@csqy1",
+        "robotName": "导出淘宝订单",
+        "startTime": "2021-02-03 11:11:11",
+        "endTime": "2021-03-03 12:12:12"
     }
     """
     try:
         body = await request.json()
-        # 影刀实际字段名是 status，不是 taskStatus
-        task_status = body.get("status") or body.get("taskStatus")
-        logger.info(f"[TASK Callback] taskUuid={body.get('taskUuid')}, status={task_status}")
 
         # 记录原始回调数据
         _callback_log.append({
@@ -129,7 +132,42 @@ async def callback_task(request: Request):
             "data": body,
         })
 
-        # 解析并处理回调
+        data_type = body.get("dataType", "")
+        task_uuid = body.get("taskUuid")
+
+        logger.info(f"[TASK Callback] dataType={data_type}, taskUuid={task_uuid}, keys={list(body.keys())}")
+
+        # 格式二：单应用回调（dataType=job），没有 taskUuid
+        # 透传给 callback_app 处理逻辑
+        if data_type == "job" or not task_uuid:
+            robot_name = body.get("robotName", "")
+            # 真实回调用 robotClientName 代替 robotName
+            if not robot_name:
+                robot_name = body.get("robotClientName", "")
+            job_status = body.get("status") or body.get("jobStatus")
+            start_time = body.get("startTime")
+            end_time = body.get("endTime")
+            job_uuid = body.get("jobUuid", "")
+
+            result = update_job_record(
+                robot_name=robot_name,
+                status=job_status,
+                start_time=start_time,
+                end_time=end_time,
+                job_uuid=job_uuid,
+            )
+
+            logger.info(f"[TASK Callback] 单应用回调处理: {result}")
+            return CallbackResponse(
+                success=result.get("success", False),
+                message="单应用回调处理成功",
+                detail={"jobs": [result]},
+            )
+
+        # 格式一：任务级回调（dataType=task）
+        task_status = body.get("status") or body.get("taskStatus")
+        logger.info(f"[TASK Callback] 任务回调: taskUuid={task_uuid}, status={task_status}")
+
         result = process_yingdao_callback(body)
 
         logger.info(f"[TASK Callback] 处理完成: {result}")

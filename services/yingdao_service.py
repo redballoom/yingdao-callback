@@ -19,7 +19,7 @@ import config
 
 def parse_datetime_to_ms(dt_value: Optional[str | int | float]) -> Optional[int]:
     """
-    将各种格式的时间值转换为飞书所需的毫秒时间戳。
+    将各种格式的时间值转换为飞书所需的毫秒时间戳（Task表 DateTime 类型用）。
 
     支持的输入格式：
     - "2026-04-10 14:00:00"       → 整数毫秒时间戳
@@ -47,6 +47,50 @@ def parse_datetime_to_ms(dt_value: Optional[str | int | float]) -> Optional[int]
             pass
 
     raise ValueError(f"无法解析时间值: {dt_value}")
+
+
+def format_datetime_for_text(dt_value: Optional[str | int | float]) -> Optional[str]:
+    """
+    将各种格式的时间值转换为 "yyyy-MM-dd HH:mm:ss" 字符串（Job表 Text 类型字段用）。
+
+    Job 表的时间字段是 Text 类型，直接存字符串，不转时间戳。
+    支持的输入格式：
+    - "2026-04-10 14:00:00"       → 原样返回
+    - "2026-04-10T14:00:00Z"      → 转换后返回
+    - 1744274400000               → 时间戳（毫秒），转为字符串
+    - 1744274400                  → 时间戳（秒），转为字符串
+    - None / "" / 0               → 返回 None
+    """
+    if dt_value is None:
+        return None
+    if isinstance(dt_value, str) and dt_value.strip() == "":
+        return None
+
+    # 已经是字符串，尝试解析为标准格式
+    if isinstance(dt_value, str):
+        dt_str = dt_value.strip()
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S.%fZ", "%Y/%m/%d %H:%M:%S"):
+            try:
+                dt = datetime.strptime(dt_str, fmt)
+                return dt.strftime("%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                pass
+        # 本身就是标准格式
+        return dt_str
+
+    # 数字时间戳
+    if isinstance(dt_value, (int, float)):
+        if dt_value <= 0:
+            return None
+        if dt_value < 10**12:
+            dt_value = dt_value * 1000
+        try:
+            dt = datetime.fromtimestamp(dt_value / 1000, tz=None)
+            return dt.strftime("%Y-%m-%d %H:%M:%S")
+        except (ValueError, OSError):
+            return None
+
+    return str(dt_value)
 
 
 # ============================================================
@@ -172,18 +216,20 @@ def update_job_record(
     status: str,
     start_time: Optional[str | int | float] = None,
     end_time: Optional[str | int | float] = None,
+    job_uuid: Optional[str] = None,
 ) -> dict:
     """
     在 Job 表中查找「当前执行应用名称 = robot_name」的记录，
     按「创建时间」倒序取最新一条，更新执行状态和时间。
 
-    注意：Job 表的时间字段是 Text 类型，直接传字符串，不需要转时间戳！
+    注意：Job 表的时间字段是 Text 类型，用 format_datetime_for_text 转为字符串！
 
     参数：
         robot_name — 应用名称（精确匹配 JOB_FIELD_ROBOT_NAME 字段）
         status     — 影刀回调中的 jobStatus（如 "running", "finish"）
-        start_time — 应用开始时间（字符串格式，如 "2026-04-13 12:00:00"）
-        end_time   — 应用结束时间（字符串格式）
+        start_time — 应用开始时间（支持字符串或时间戳）
+        end_time   — 应用结束时间（支持字符串或时间戳）
+        job_uuid   — 影刀 jobUuid（可选，用于日志）
 
     返回：
         dict，key "success"=bool，"updated"=bool，"record_id"=被更新的记录ID
@@ -215,13 +261,16 @@ def update_job_record(
     target_record = records_sorted[0]
 
     # 构建更新字段
-    # Job 表的时间字段是 Text 类型，直接传字符串
+    # Job 表的时间字段是 Text 类型，用 format_datetime_for_text 转为标准字符串
     fields = {"任务状态": map_job_status(status)}
     if start_time is not None:
-        # 直接传字符串，不转时间戳
-        fields[config.JOB_FIELD_START_TIME] = str(start_time)
+        formatted = format_datetime_for_text(start_time)
+        if formatted:
+            fields[config.JOB_FIELD_START_TIME] = formatted
     if end_time is not None:
-        fields[config.JOB_FIELD_END_TIME] = str(end_time)
+        formatted = format_datetime_for_text(end_time)
+        if formatted:
+            fields[config.JOB_FIELD_END_TIME] = formatted
 
     sdk.update_record(target_record["record_id"], fields)
 
