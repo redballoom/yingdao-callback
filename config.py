@@ -4,9 +4,10 @@
 # ============================================================
 
 # ---------- 飞书应用凭证 ----------
-# 与 config.py 中的 APP_ID / APP_SECRET 相同
-APP_ID = "XXX"
-APP_SECRET = "XXX"
+# 优先从环境变量读取（Vercel 部署），否则使用默认值
+import os
+APP_ID = os.environ.get("FEISHU_APP_ID", "cli_a940885a8cbedbc2")
+APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "")
 
 # ---------- API 配置 ----------
 API_BASE_URL = "https://open.feishu.cn/open-apis"
