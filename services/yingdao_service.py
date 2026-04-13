@@ -241,20 +241,22 @@ def process_yingdao_callback(callback_data: dict) -> dict:
     """
     处理影刀任务运行回调的主函数。
 
-    影刀回调格式示例：
+    影刀实际回调格式：
     {
-        "taskUuid": "abc-123",
-        "taskStatus": "running",
-        "startTime": "2026-04-10 14:00:00",
-        "endTime": null,
+        "dataType": "task",
+        "taskUuid": "ea947f83-82fb-4afb-8412-4021255fd7cd",
+        "status": "finish",          // ← 影刀用 status，不是 taskStatus
+        "startTime": 1642837962000,  // 毫秒时间戳，可为空
+        "endTime": 1642837962000,
         "jobList": [
             {
-                "robotName": "应用A",
-                "jobStatus": "running",
-                "startTime": "2026-04-10 14:00:00",
-                "endTime": null
-            },
-            ...
+                "dataType": "job",
+                "robotName": "导出淘宝订单",   // 应用名称（搜索条件）
+                "status": "finish",            // ← 影刀用 status，不是 jobStatus
+                "startTime": "2021-02-03 11:11:11",
+                "endTime": "2021-03-03 12:12:12",
+                ...
+            }
         ]
     }
 
@@ -266,7 +268,8 @@ def process_yingdao_callback(callback_data: dict) -> dict:
         处理结果摘要 dict
     """
     task_uuid = callback_data.get("taskUuid", "")
-    task_status = callback_data.get("taskStatus", "")
+    # 影刀实际字段名是 status，兼容旧格式 taskStatus
+    task_status = callback_data.get("status") or callback_data.get("taskStatus", "")
     task_start = callback_data.get("startTime")
     task_end = callback_data.get("endTime")
     job_list: List[dict] = callback_data.get("jobList", [])
@@ -277,9 +280,11 @@ def process_yingdao_callback(callback_data: dict) -> dict:
     # Step 2: 更新 Job 表（每个应用一条）
     job_results = []
     for job in job_list:
+        # 影刀实际字段名是 status，兼容旧格式 jobStatus
+        job_status = job.get("status") or job.get("jobStatus", "")
         result = update_job_record(
             robot_name=job.get("robotName", ""),
-            status=job.get("jobStatus", ""),
+            status=job_status,
             start_time=job.get("startTime"),
             end_time=job.get("endTime"),
         )

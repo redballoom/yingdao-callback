@@ -75,25 +75,28 @@ async def callback_task(request: Request):
     影刀任务运行回调
     触发时机：整个任务状态变化时推送
 
-    请求体示例：
+    影刀实际请求体格式：
     {
-        "taskUuid": "abc-123",
-        "taskStatus": "running",
-        "startTime": "2026-04-10 14:00:00",
-        "endTime": null,
+        "dataType": "task",
+        "taskUuid": "ea947f83-82fb-4afb-8412-4021255fd7cd",
+        "status": "finish",        // ← 影刀用 status
+        "startTime": 1642837962000,
+        "endTime": 1642837962000,
         "jobList": [
             {
-                "robotName": "数据采集机器人",
-                "jobStatus": "running",
-                "startTime": "2026-04-10 14:00:00",
-                "endTime": null
+                "robotName": "导出淘宝订单",
+                "status": "finish",  // ← 影刀用 status
+                "startTime": "2021-02-03 11:11:11",
+                "endTime": "2021-03-03 12:12:12"
             }
         ]
     }
     """
     try:
         body = await request.json()
-        logger.info(f"[TASK Callback] taskUuid={body.get('taskUuid')}, status={body.get('taskStatus')}")
+        # 影刀实际字段名是 status，不是 taskStatus
+        task_status = body.get("status") or body.get("taskStatus")
+        logger.info(f"[TASK Callback] taskUuid={body.get('taskUuid')}, status={task_status}")
 
         # 解析并处理回调
         result = process_yingdao_callback(body)
@@ -123,20 +126,21 @@ async def callback_app(request: Request):
     影刀应用节点回调
     触发时机：每个应用节点开始/结束时推送
 
-    请求体示例：
+    影刀实际请求体格式：
     {
-        "jobUuid": "job-456",
-        "robotName": "数据采集机器人",
-        "jobStatus": "finish",
-        "startTime": "2026-04-10 14:00:00",
-        "endTime": "2026-04-10 14:30:00",
-        "result": {"output_key": "output_value"}
+        "dataType": "job",
+        "jobUuid": "6de893bb-8224-4f60-9bff-b8597b8ed8fc",
+        "robotName": "导出淘宝订单",  // 应用名称
+        "status": "finish",           // ← 影刀用 status
+        "startTime": "2021-02-03 11:11:11",
+        "endTime": "2021-03-03 12:12:12"
     }
     """
     try:
         body = await request.json()
+        # 影刀实际字段名是 status，不是 jobStatus
         robot_name = body.get("robotName", "")
-        job_status = body.get("jobStatus", "")
+        job_status = body.get("status") or body.get("jobStatus")
         start_time = body.get("startTime")
         end_time = body.get("endTime")
 
